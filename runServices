@@ -1,0 +1,80 @@
+import os
+import hashlib
+import random
+import time
+
+# Generating random password for root user
+randomNumber = random.randint(1000000, 9999999)
+hashedRand = hashlib.new('md5')
+hashedRand.update(str(randomNumber))
+hashedRand = hashedRand.hexdigest()
+
+# Changing root user password
+os.system("echo " + hashedRand + "| passwd root --stdin")
+
+# Generating SSH keys
+os.system("ssh-keygen -q -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''")
+os.system("ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''")
+os.system("ssh-keygen -q -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ''")
+os.system("ssh-keygen -q -t rsa -f /root/ssh-key -N ''")
+
+# Configuring SSH server
+os.system("mkdir /root/.ssh")
+os.system("cp /root/ssh-key.pub /root/.ssh/authorized_keys")
+os.system("sed -i 's/X11Forwarding yes/X11Forwarding no/g' /etc/ssh/sshd_config")
+os.system("sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/g' /etc/ssh/sshd_config")
+os.system("sed -i 's/GSSAPIAuthentication yes/GSSAPIAuthentication no/g' /etc/ssh/sshd_config")
+os.system("sed -i 's/#MaxAuthTries 6/MaxAuthTries 3/g' /etc/ssh/sshd_config")
+os.system("sed -i 's/#LoginGraceTime 2m/#LoginGraceTime 30/g' /etc/ssh/sshd_config")
+
+# Configuring apache
+os.system("sed -i 's|/var/www/html|/home/web/public|g' /etc/httpd/conf/httpd.conf")
+os.system("sed -i 's|/var/www|/home/web|g' /etc/httpd/conf/httpd.conf")
+os.system("sed -i 's|/var/www/cgi-bin/|/home/web/cgi-bin/|g' /etc/httpd/conf/httpd.conf")
+os.system("sed -i 's|/var/www/cgi-bin|/home/web/cgi-bin|g' /etc/httpd/conf/httpd.conf")
+os.system("sed -i 's|/var/www/cgi-bin|/home/web/cgi-bin|g' /etc/httpd/conf/httpd.conf")
+os.system("sed -i 's|AllowOverride None|AllowOverride All|g' /etc/httpd/conf/httpd.conf")
+
+# Configuring custom user for PHP processes
+os.system("useradd -m web")
+os.system("echo " + hashedRand + "| passwd web --stdin")
+os.system("chmod 0755 /home/web")
+os.system("mkdir /home/web/public")
+os.system("chown web:web /home/web/public")
+os.system("mkdir /home/web/.ssh")
+os.system("chown web:web /home/web/.ssh")
+os.system("cp /root/ssh-key.pub /home/web/.ssh/authorized_keys")
+os.system("chown web:web /home/web/.ssh/authorized_keys")
+
+# Configuring PHP-FPM pool
+os.system("sed -i 's|www|web|g' /etc/opt/remi/php73/php-fpm.d/www.conf")
+os.system("sed -i 's|user = apache|user = web|g' /etc/opt/remi/php73/php-fpm.d/www.conf")
+os.system("sed -i 's|group = apache|group = web|g' /etc/opt/remi/php73/php-fpm.d/www.conf")
+os.system("sed -i 's|php_admin_value|;php_admin_value|g' /etc/opt/remi/php73/php-fpm.d/www.conf")
+os.system("sed -i 's|php_admin_flag|;php_admin_flag|g' /etc/opt/remi/php73/php-fpm.d/www.conf")
+os.system("sed -i 's|php_value|;php_value|g' /etc/opt/remi/php73/php-fpm.d/www.conf")
+os.system("mv /etc/opt/remi/php73/php-fpm.d/www.conf /etc/opt/remi/php73/php-fpm.d/web.conf")
+
+# Creating empty file for the Apache installation
+os.system("touch /var/www/html/index.html")
+
+# Starting services
+os.system("supervisord -c /etc/supervisord.conf")
+
+# Waiting for the services to start
+time.sleep(5)
+
+# Configuring MariaDB server
+os.system("mysql -e \"DROP DATABASE test\" ")
+os.system("mysql -e \"DELETE FROM mysql.user WHERE user!='root'\" ")
+os.system("mysql -e \"DELETE FROM mysql.user WHERE host!='localhost' AND host!='127.0.0.1' AND host!='::1'\" ")
+os.system("mysqladmin password " + hashedRand)
+
+# Creat runServices.log file and put the generated content
+fileContent = "Your 'root' and 'web' user password is: " + hashedRand + "\nYou can use the same password for the database server root user."
+file = open('/root/runServices.log', 'w')
+file.write(fileContent)
+file.close()
+
+# Runing bash
+os.system("bash")
