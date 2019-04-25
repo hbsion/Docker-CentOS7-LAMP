@@ -71,7 +71,7 @@ os.system("mysql -e \"DELETE FROM mysql.user WHERE host!='localhost' AND host!='
 os.system("mysqladmin password " + hashedRand)
 
 # Creat runServices.log file and put the generated content
-fileContent = "Your 'root' and 'web' user password is: " + hashedRand + "\nYou can use the same password for the database server root user."
+fileContent = 'Your "root" and "web" user password is: ' + hashedRand + "\nYou can use the same password for the database server root user."
 file = open('/root/runServices.log', 'w')
 file.write(fileContent)
 file.close()

@@ -8,6 +8,9 @@ RUN yum -y update
 # Installing Supervisor
 RUN yum -y install supervisor
 
+# Installing cron daemon
+RUN yum -y install cronie
+
 # Installing OpenSSH server
 RUN yum -y install openssh-server
 EXPOSE 2222
@@ -57,6 +60,7 @@ COPY ./mysql.ini /etc/supervisord.d/mysql.ini
 COPY ./apache.ini /etc/supervisord.d/apache.ini
 COPY ./fpm.ini /etc/supervisord.d/fpm.ini
 COPY ./ssh.ini /etc/supervisord.d/ssh.ini
+COPY ./cron.ini /etc/supervisord.d/cron.ini
 COPY ./runServices /root/runServices
 
 # Setting working directory
