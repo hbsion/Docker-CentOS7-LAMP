@@ -55,6 +55,9 @@ os.system("sed -i 's|php_admin_flag|;php_admin_flag|g' /etc/opt/remi/php73/php-f
 os.system("sed -i 's|php_value|;php_value|g' /etc/opt/remi/php73/php-fpm.d/www.conf")
 os.system("mv /etc/opt/remi/php73/php-fpm.d/www.conf /etc/opt/remi/php73/php-fpm.d/web.conf")
 
+# Configuring Cron
+os.system("echo '0 0 * * * /usr/bin/certbot renew > /dev/null 2>&1' >> /etc/crontab ")
+
 # Creating empty file for the Apache installation
 os.system("touch /var/www/html/index.html")
 

@@ -46,6 +46,17 @@ RUN yum -y install \
     php73-php-xml \
     php73-php-xmlrpc
 
+# Installing Certbot
+RUN yum -y install \
+    certbot \
+    python2-certbot-apache \
+    python2-certbot-nginx \
+    python2-certbot-dns-cloudflare \
+    python2-certbot-dns-digitalocean \
+    python2-certbot-dns-linode \
+    python2-certbot-dns-rfc2136 \
+    python2-certbot-dns-google
+
 # Installing GIT
 RUN yum -y install \
     git

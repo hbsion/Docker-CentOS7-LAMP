@@ -1,4 +1,4 @@
-# CentOS 7 LAMP v1.1
+# CentOS 7 LAMP v1.2
 ## Apache 2.4 * PHP 7.3 * PHP-FPM * MariaDB 10.3 * SSH
 ---
 ### Users
@@ -35,3 +35,4 @@ Public key authentication are enabled for "root" and "web" users.
 * Git
 * Composer
 * Cron
+* Certbot (automated daily renewals)
