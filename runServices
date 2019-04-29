@@ -3,6 +3,13 @@ import hashlib
 import random
 import time
 
+# Checking if already configured
+logFile = os.path.isfile("/root/runServices.log")
+if logFile:
+    os.system("supervisord -c /etc/supervisord.conf")
+    os.system("bash")
+    exit()
+
 # Generating random password for root user
 randomNumber = random.randint(1000000, 9999999)
 hashedRand = hashlib.new('md5')
