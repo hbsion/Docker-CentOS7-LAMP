@@ -57,6 +57,10 @@ RUN yum -y install \
     python2-certbot-dns-rfc2136 \
     python2-certbot-dns-google
 
+# Installing Sendmail
+RUN yum -y install \
+    sendmail
+
 # Installing GIT
 RUN yum -y install \
     git

@@ -56,6 +56,14 @@ os.system("sed -i 's|php_admin_flag|;php_admin_flag|g' /etc/opt/remi/php73/php-f
 os.system("sed -i 's|php_value|;php_value|g' /etc/opt/remi/php73/php-fpm.d/www.conf")
 os.system("mv /etc/opt/remi/php73/php-fpm.d/www.conf /etc/opt/remi/php73/php-fpm.d/web.conf")
 
+# Configuring PHP engine
+os.system("sed -i 's|expose_php = On|expose_php = Off|g' /etc/opt/remi/php73/php.ini")
+os.system("sed -i 's|max_execution_time = 30|max_execution_time = 60|g' /etc/opt/remi/php73/php.ini")
+os.system("sed -i 's|memory_limit = 128M|memory_limit = 256M|g' /etc/opt/remi/php73/php.ini")
+os.system("sed -i 's|post_max_size = 8M|post_max_size = 225M|g' /etc/opt/remi/php73/php.ini")
+os.system("sed -i 's|upload_max_filesize = 2M|upload_max_filesize = 200M|g' /etc/opt/remi/php73/php.ini")
+os.system("sed -i 's|;date.timezone =|date.timezone = UTC|g' /etc/opt/remi/php73/php.ini")
+
 # Configuring Cron
 os.system("echo '0 0 * * * /usr/bin/certbot renew > /dev/null 2>&1' >> /etc/crontab ")
 
