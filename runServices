@@ -34,6 +34,7 @@ os.system("sed -i 's|/var/www/cgi-bin/|/home/web/cgi-bin/|g' /etc/httpd/conf/htt
 os.system("sed -i 's|/var/www/cgi-bin|/home/web/cgi-bin|g' /etc/httpd/conf/httpd.conf")
 os.system("sed -i 's|/var/www/cgi-bin|/home/web/cgi-bin|g' /etc/httpd/conf/httpd.conf")
 os.system("sed -i 's|AllowOverride None|AllowOverride All|g' /etc/httpd/conf/httpd.conf")
+os.system("sed -i 's|Options Indexes FollowSymLinks|Options -Indexes FollowSymLinks|g' /etc/httpd/conf/httpd.conf")
 
 # Configuring custom user for PHP processes
 os.system("useradd -m web")
