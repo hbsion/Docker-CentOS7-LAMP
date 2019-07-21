@@ -46,7 +46,8 @@ RUN yum -y install \
     php73-php-xml \
     php73-php-xmlrpc \
     php73-php-zip \
-    php73-php-intl
+    php73-php-intl \
+    php73-php-apc
 
 # Installing Certbot
 RUN yum -y install \
