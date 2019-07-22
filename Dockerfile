@@ -30,35 +30,36 @@ EXPOSE 443
 # Available versions are 54,55,56,70,71,72,73
 RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN yum -y install \
-    php73-php-fpm \
-    php73-php-cli \
-    php73-php-bcmath \
-    php73-php-gd \
-    php73-php-imap \
-    php73-php-ioncube-loader \
-    php73-php-json \
-    php73-php-mbstring \
-    php73-php-mysqlnd \
-    php73-php-opcache \
-    php73-php-pdo \
-    php73-php-pear \
-    php73-php-soap \
-    php73-php-xml \
-    php73-php-xmlrpc \
-    php73-php-zip \
-    php73-php-intl \
-    php73-php-apc
+    php71-php-fpm \
+    php71-php-cli \
+    php71-php-bcmath \
+    php71-php-gd \
+    php71-php-imap \
+    php71-php-ioncube-loader \
+    php71-php-json \
+    php71-php-mbstring \
+    php71-php-mysqlnd \
+    php71-php-opcache \
+    php71-php-pdo \
+    php71-php-pear \
+    php71-php-soap \
+    php71-php-xml \
+    php71-php-xmlrpc \
+    php71-php-zip \
+    php71-php-intl \
+    php71-php-apc \
+    php71-php-fileinfo 
 
 # Installing Certbot
-RUN yum -y install \
-    certbot \
-    python2-certbot-apache \
-    python2-certbot-nginx \
-    python2-certbot-dns-cloudflare \
-    python2-certbot-dns-digitalocean \
-    python2-certbot-dns-linode \
-    python2-certbot-dns-rfc2136 \
-    python2-certbot-dns-google
+# RUN yum -y install \
+#     certbot \
+#     python2-certbot-apache \
+#     python2-certbot-nginx \
+#     python2-certbot-dns-cloudflare \
+#     python2-certbot-dns-digitalocean \
+#     python2-certbot-dns-linode \
+#     python2-certbot-dns-rfc2136 \
+#     python2-certbot-dns-google
 
 # Installing Sendmail
 RUN yum -y install \
@@ -69,7 +70,7 @@ RUN yum -y install \
     git
 
 # Installing Composer
-RUN curl https://getcomposer.org/installer | /usr/bin/php73 -- --filename=composer
+RUN curl https://getcomposer.org/installer | /usr/bin/php71 -- --filename=composer
 
 # Copying configuration files
 COPY ./mariadb.cnf /etc/my.cnf.d/mariadb.cnf
