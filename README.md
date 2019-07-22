@@ -1,5 +1,5 @@
 # CentOS 7 LAMP v1.2
-## Apache 2.4 * PHP 7.3 * PHP-FPM * MariaDB 10.3 * SSH
+## Apache 2.4 * PHP 7.1 * PHP-FPM * MariaDB 10.3 * SSH
 ---
 ### Users
 * web - Standard user without privileges. You should login into this account for the web site management. Home directory for this user is /home/web. In this folder you can find "public" folder, where you should place your application files.
@@ -22,7 +22,7 @@ Public key authentication are enabled for "root" and "web" users.
 * Port: 80/tcp, 443/tcp
 
 ### PHP
-* Configuration directory: /etc/opt/remi/php73
+* Configuration directory: /etc/opt/remi/php71
 * PHP-FPM pool "web" loopback port: 9000/tcp
 
 ### MariaDB
@@ -35,4 +35,3 @@ Public key authentication are enabled for "root" and "web" users.
 * Git
 * Composer
 * Cron
-* Certbot (automated daily renewals)

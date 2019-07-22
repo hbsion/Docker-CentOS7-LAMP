@@ -1,6 +1,9 @@
 # Creating image from CentOS 7
 FROM centos:7
 
+
+ENV PHPMYADMIN_VERSION=4.9.0.1
+
 # Installing EPEL and updating 
 RUN yum -y install epel-release yum-utils
 RUN yum -y update
@@ -9,7 +12,7 @@ RUN yum -y update
 RUN yum -y install supervisor
 
 # Installing cron daemon
-RUN yum -y install cronie
+RUN yum -y install cronie gzip zip unzip tar wget
 
 # Installing OpenSSH server
 RUN yum -y install openssh-server
@@ -50,16 +53,8 @@ RUN yum -y install \
     php71-php-apc \
     php71-php-fileinfo 
 
-# Installing Certbot
-# RUN yum -y install \
-#     certbot \
-#     python2-certbot-apache \
-#     python2-certbot-nginx \
-#     python2-certbot-dns-cloudflare \
-#     python2-certbot-dns-digitalocean \
-#     python2-certbot-dns-linode \
-#     python2-certbot-dns-rfc2136 \
-#     python2-certbot-dns-google
+# php console
+RUN mv /bin/php71 /bin/php
 
 # Installing Sendmail
 RUN yum -y install \
@@ -69,8 +64,20 @@ RUN yum -y install \
 RUN yum -y install \
     git
 
+# Add phpmyadmin
+RUN wget -O /tmp/phpmyadmin.tar.gz https://files.phpmyadmin.net/phpMyAdmin/${PHPMYADMIN_VERSION}/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages.tar.gz
+RUN tar xfvz /tmp/phpmyadmin.tar.gz -C /var/www
+RUN chown -R web.web /var/www/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages
+RUN ln -s /var/www/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages /var/www/phpmyadmin
+RUN mv /var/www/phpmyadmin/config.sample.inc.php /var/www/phpmyadmin/config.inc.php
+
 # Installing Composer
 RUN curl https://getcomposer.org/installer | /usr/bin/php71 -- --filename=composer
+
+# Installing Certbot
+RUN yum -y install \
+    certbot \
+    python2-certbot-apache
 
 # Copying configuration files
 COPY ./mariadb.cnf /etc/my.cnf.d/mariadb.cnf
